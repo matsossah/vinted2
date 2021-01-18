@@ -1,8 +1,18 @@
 header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  background-color: blue;
+  margin: 0 auto;
 }
 
 header img {
   height: 50px;
+}
+
+.cover {
+  height: 600px;
+  width: 100%;
+  object-fit: cover;
+  margin-bottom: 10px;
 }

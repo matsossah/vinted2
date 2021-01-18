@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/vinted-logo.png";
+import cover from "../assets/cover.jpeg";
 
 const Home = () => {
   return (
     <div>
-      <p>LVQM HOME</p>
       <header>
         <div>
           <img src={logo} alt="logo" />
@@ -15,6 +15,9 @@ const Home = () => {
           <button>Vendre ses articles</button>
         </div>
       </header>
+      <div className="cover">
+        <img className="cover" src={cover} alt="logo" />
+      </div>
       <Link to="/offer"> Aller sur la page LVQM Offer</Link>
     </div>
   );
