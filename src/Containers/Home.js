@@ -1,9 +1,31 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import logo from "../assets/vinted-logo.png";
 import cover from "../assets/cover.jpeg";
+import logo from "../assets/vinted-logo.png";
+import axios from "axios";
 
 const Home = () => {
-  return (
+  const [data, setData] = useState({});
+  const [isLoading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          "https://lereacteur-vinted-api.herokuapp.com/offers"
+        );
+        setData(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  return isLoading ? (
+    <p>Loading...</p>
+  ) : (
     <div>
       <header>
         <div>
@@ -18,7 +40,13 @@ const Home = () => {
       <div className="cover">
         <img className="cover" src={cover} alt="logo" />
       </div>
-      <Link to="/offer"> Aller sur la page LVQM Offer</Link>
+      {data.offers.map((offer, index) => {
+        return (
+          <Link to={`/offer/${offer._id}`} key={offer._id}>
+            <p>{offer.product_name}</p>
+          </Link>
+        );
+      })}
     </div>
   );
 };
