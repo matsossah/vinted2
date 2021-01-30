@@ -9,10 +9,12 @@ const Header = (props) => {
       </div>
       {token ? (
         <div>
+          <input type="text" />
           <button onClick={handleLogout}>Se déconnecter</button>
         </div>
       ) : (
         <div>
+          <input type="text" />
           <Link to="/signup">
             <button>S'inscrire</button>
           </Link>

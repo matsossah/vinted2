@@ -15,6 +15,12 @@ const App = () => {
   const [token, setToken] = useState();
   const [data, setData] = useState({});
   const [isLoading, setLoading] = useState(true);
+  const [title, setTitle] = useState("");
+  const [priceMin, setPriceMin] = useState(0);
+  const [priceMax, setPriceMax] = useState(1000);
+  const [priceOrg, setPriceOrg] = useState("");
+  const [limit, setLimit] = useState(20);
+  const [skip, setSkip] = useState(0);
 
   const handleLogout = () => {
     Cookies.remove("userToken");
@@ -32,7 +38,7 @@ const App = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://lereacteur-vinted-api.herokuapp.com/offers"
+          `https://lereacteur-vinted-api.herokuapp.com/offers?title=${title}&priceMin=${priceMin}&priceMax=${priceMax}&sort=${priceOrg}?limit=${limit}&skip=${skip}`
         );
         setData(response.data);
         setLoading(false);
@@ -45,7 +51,17 @@ const App = () => {
 
   return (
     <Router>
-      <Header logo={logo} token={token} handleLogout={handleLogout} />
+      <Header
+        logo={logo}
+        token={token}
+        handleLogout={handleLogout}
+        setTitle={setTitle}
+        setPriceMin={setPriceMin}
+        setPriceMax={setPriceMax}
+        setPriceOrg={setPriceOrg}
+        setLimit={setLimit}
+        setSkip={setSkip}
+      />
       <Switch>
         <Route path="/offer/:id">
           <Offer />
@@ -56,9 +72,10 @@ const App = () => {
         <Route path="/signup">
           <Signup setToken={setToken} />
         </Route>
-        <Route path="/">
-          <Home token={token} data={data} isLoading={isLoading} />
-        </Route>
+        <Route
+          path="/"
+          children={<Home token={token} data={data} isLoading={isLoading} />}
+        />
       </Switch>
     </Router>
   );

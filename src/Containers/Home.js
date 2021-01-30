@@ -1,8 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import cover from "../assets/cover.jpeg";
 
 const Home = (props) => {
   const { isLoading, data } = props;
+  let {
+    title,
+    priceMin,
+    priceMax,
+    priceAsc,
+    priceDesc,
+    limit,
+    skip,
+  } = useParams;
+
+  console.log(title);
 
   return isLoading ? (
     <p>Loading...</p>
@@ -14,7 +25,9 @@ const Home = (props) => {
       {data.offers.map((offer, index) => {
         return (
           <Link to={`/offer/${offer._id}`} key={offer._id}>
-            <p>{offer.product_name}</p>
+            <p>
+              {offer.product_name} - {offer.product_price}
+            </p>
           </Link>
         );
       })}
