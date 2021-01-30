@@ -45,6 +45,26 @@ const Header = (props) => {
               handleTitle(event);
             }}
           />
+          <p>Décroissant</p>
+          <input
+            type="checkbox"
+            checked={priceOrg === "price-desc" ? true : false}
+            onChange={() => {
+              priceOrg !== "price-desc"
+                ? handlePriceOrg("price-desc")
+                : handlePriceOrg("");
+            }}
+          />
+          <p>Croissant</p>
+          <input
+            type="checkbox"
+            checked={priceOrg === "price-asc" ? true : false}
+            onChange={() => {
+              priceOrg !== "price-asc"
+                ? handlePriceOrg("price-asc")
+                : handlePriceOrg("");
+            }}
+          />
           <Link to="/signup">
             <button>S'inscrire</button>
           </Link>

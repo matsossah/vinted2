@@ -76,7 +76,7 @@ const App = () => {
   };
 
   const handlePriceOrg = (event) => {
-    setPriceOrg(event.target.value);
+    setPriceOrg(event);
   };
 
   const handleLimit = (event) => {
