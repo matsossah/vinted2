@@ -1,7 +1,23 @@
 import { Link } from "react-router-dom";
 
 const Header = (props) => {
-  const { logo, token, handleLogout } = props;
+  const {
+    logo,
+    token,
+    handleLogout,
+    title,
+    handleTitle,
+    priceMin,
+    handlePriceMin,
+    priceMax,
+    handlePriceMax,
+    priceOrg,
+    handlePriceOrg,
+    limit,
+    handleLimit,
+    skip,
+    handleSkip,
+  } = props;
   return (
     <header>
       <div>
@@ -9,12 +25,26 @@ const Header = (props) => {
       </div>
       {token ? (
         <div>
-          <input type="text" />
+          <input
+            type="text"
+            value={title}
+            placeHolder="Search..."
+            onChange={(event) => {
+              handleTitle(event);
+            }}
+          />
           <button onClick={handleLogout}>Se déconnecter</button>
         </div>
       ) : (
         <div>
-          <input type="text" />
+          <input
+            type="text"
+            value={title}
+            placeHolder="Search..."
+            onChange={(event) => {
+              handleTitle(event);
+            }}
+          />
           <Link to="/signup">
             <button>S'inscrire</button>
           </Link>

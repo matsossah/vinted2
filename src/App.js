@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import logo from "./assets/vinted-logo.png";
 import axios from "axios";
+import qs from "qs";
 
 import Home from "./Containers/Home.js";
 import Signup from "./Containers/Signup.js";
 import Login from "./Containers/Login.js";
 import Offer from "./Containers/Offer.js";
 import Header from "./Components/Header.js";
+import { useDebounce } from "use-debounce";
 
 const App = () => {
   const [token, setToken] = useState();
@@ -21,11 +23,9 @@ const App = () => {
   const [priceOrg, setPriceOrg] = useState("");
   const [limit, setLimit] = useState(20);
   const [skip, setSkip] = useState(0);
-
-  const handleLogout = () => {
-    Cookies.remove("userToken");
-    setToken("");
-  };
+  const [debouncedTitle] = useDebounce(title, 1500);
+  const [debouncedPriceMin] = useDebounce(priceMin, 1500);
+  const [debouncedPriceMax] = useDebounce(priceMax, 1500);
 
   useEffect(() => {
     const token = Cookies.get("userToken");
@@ -36,9 +36,18 @@ const App = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const params = {
+        title: debouncedTitle,
+        priceMin: debouncedPriceMin,
+        priceMax: debouncedPriceMax,
+        sort: priceOrg,
+        limit: limit,
+        skip: skip,
+      };
+      const queryParams = qs.stringify(params);
       try {
         const response = await axios.get(
-          `https://lereacteur-vinted-api.herokuapp.com/offers?title=${title}&priceMin=${priceMin}&priceMax=${priceMax}&sort=${priceOrg}?limit=${limit}&skip=${skip}`
+          `https://lereacteur-vinted-api.herokuapp.com/offers?${queryParams}`
         );
         setData(response.data);
         setLoading(false);
@@ -47,20 +56,55 @@ const App = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [debouncedTitle, debouncedPriceMin, debouncedPriceMax, priceOrg]);
+
+  const handleLogout = () => {
+    Cookies.remove("userToken");
+    setToken("");
+  };
+
+  const handleTitle = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const handlePriceMin = (event) => {
+    setPriceMin(event.target.value);
+  };
+
+  const handlePriceMax = (event) => {
+    setPriceMax(event.target.value);
+  };
+
+  const handlePriceOrg = (event) => {
+    setPriceOrg(event.target.value);
+  };
+
+  const handleLimit = (event) => {
+    setLimit(event.target.value);
+  };
+
+  const handleSkip = (event) => {
+    setSkip(event.target.value);
+  };
 
   return (
     <Router>
       <Header
         logo={logo}
         token={token}
+        title={title}
+        priceMin={priceMin}
+        priceMax={priceMax}
+        priceOrg={priceOrg}
+        limit={limit}
+        skip={skip}
         handleLogout={handleLogout}
-        setTitle={setTitle}
-        setPriceMin={setPriceMin}
-        setPriceMax={setPriceMax}
-        setPriceOrg={setPriceOrg}
-        setLimit={setLimit}
-        setSkip={setSkip}
+        handleTitle={handleTitle}
+        handlePriceMin={handlePriceMin}
+        handlePriceMax={handlePriceMax}
+        handlePriceOrg={handlePriceOrg}
+        handleLimit={handleLimit}
+        handleSkip={handleSkip}
       />
       <Switch>
         <Route path="/offer/:id">
