@@ -6,13 +6,19 @@ import logo from "./assets/vinted-logo.png";
 import axios from "axios";
 import qs from "qs";
 
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+
 import Home from "./Containers/Home.js";
 import Signup from "./Containers/Signup.js";
 import Login from "./Containers/Login.js";
 import Offer from "./Containers/Offer.js";
 import Publish from "./Containers/Publish.js";
+import Payment from "./Containers/Payment.js";
 import Header from "./Components/Header.js";
 import { useDebounce } from "use-debounce";
+
+const stripePromise = loadStripe("pk_test_tUGC5aZCr2ctlwfFU6Zj6Gir");
 
 const App = () => {
   const [token, setToken] = useState();
@@ -90,41 +96,46 @@ const App = () => {
 
   return (
     <Router>
-      <Header
-        logo={logo}
-        token={token}
-        title={title}
-        priceMin={priceMin}
-        priceMax={priceMax}
-        priceOrg={priceOrg}
-        limit={limit}
-        skip={skip}
-        handleLogout={handleLogout}
-        handleTitle={handleTitle}
-        handlePriceMin={handlePriceMin}
-        handlePriceMax={handlePriceMax}
-        handlePriceOrg={handlePriceOrg}
-        handleLimit={handleLimit}
-        handleSkip={handleSkip}
-      />
-      <Switch>
-        <Route path="/offer/:id">
-          <Offer />
-        </Route>
-        <Route path="/login">
-          <Login setToken={setToken} />
-        </Route>
-        <Route path="/signup">
-          <Signup setToken={setToken} />
-        </Route>
-        <Route path="/publish">
-          <Publish setToken={setToken} token={token} />
-        </Route>
-        <Route
-          path="/"
-          children={<Home token={token} data={data} isLoading={isLoading} />}
+      <Elements stripe={stripePromise}>
+        <Header
+          logo={logo}
+          token={token}
+          title={title}
+          priceMin={priceMin}
+          priceMax={priceMax}
+          priceOrg={priceOrg}
+          limit={limit}
+          skip={skip}
+          handleLogout={handleLogout}
+          handleTitle={handleTitle}
+          handlePriceMin={handlePriceMin}
+          handlePriceMax={handlePriceMax}
+          handlePriceOrg={handlePriceOrg}
+          handleLimit={handleLimit}
+          handleSkip={handleSkip}
         />
-      </Switch>
+        <Switch>
+          <Route path="/offer/:id">
+            <Offer />
+          </Route>
+          <Route path="/login">
+            <Login setToken={setToken} />
+          </Route>
+          <Route path="/signup">
+            <Signup setToken={setToken} />
+          </Route>
+          <Route path="/publish">
+            <Publish setToken={setToken} token={token} />
+          </Route>
+          <Route path="/payment">
+            <Payment />
+          </Route>
+          <Route
+            path="/"
+            children={<Home token={token} data={data} isLoading={isLoading} />}
+          />
+        </Switch>
+      </Elements>
     </Router>
   );
 };
