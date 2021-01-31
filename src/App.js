@@ -10,6 +10,7 @@ import Home from "./Containers/Home.js";
 import Signup from "./Containers/Signup.js";
 import Login from "./Containers/Login.js";
 import Offer from "./Containers/Offer.js";
+import Publish from "./Containers/Publish.js";
 import Header from "./Components/Header.js";
 import { useDebounce } from "use-debounce";
 
@@ -115,6 +116,9 @@ const App = () => {
         </Route>
         <Route path="/signup">
           <Signup setToken={setToken} />
+        </Route>
+        <Route path="/publish">
+          <Publish setToken={setToken} token={token} />
         </Route>
         <Route
           path="/"

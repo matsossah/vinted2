@@ -20,15 +20,15 @@ const Header = (props) => {
   } = props;
   return (
     <header>
-      <div>
+      <Link to="/">
         <img src={logo} alt="logo" />
-      </div>
+      </Link>
       {token ? (
         <div>
           <input
             type="text"
             value={title}
-            placeHolder="Search..."
+            placeholder="Search..."
             onChange={(event) => {
               handleTitle(event);
             }}
@@ -40,7 +40,7 @@ const Header = (props) => {
           <input
             type="text"
             value={title}
-            placeHolder="Search..."
+            placeholder="Search..."
             onChange={(event) => {
               handleTitle(event);
             }}
@@ -73,7 +73,9 @@ const Header = (props) => {
           </Link>
         </div>
       )}
-      <button>Vendre ses articles</button>
+      <Link to="/publish">
+        <button>Vendre ses articles</button>
+      </Link>
     </header>
   );
 };
